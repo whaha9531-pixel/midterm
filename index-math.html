@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高中數學段考 · 試卷智能檢討與錯題診斷系統 (88分複習指南)</title>
+  <meta name="description" content="包含數學段考題目解答、考卷檢討、重點觀念整理、寫錯盲點深度剖析與推薦學習資源網址。">
+
+  <!-- Google Fonts: Outfit & Noto Sans TC -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 幾何氛圍光暈背景 -->
+  <div class="ambient-bg"></div>
+
+  <div class="app-wrapper">
+    <!-- 頂部導航列 -->
+    <header class="top-nav">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+            <path d="m9 9.5 2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>數學考卷智能檢討系統</h1>
+          <p>解答 · 檢討 · 重點精華 · 盲點診斷 · 延伸學習網址</p>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <button id="themeToggleBtn" class="btn-icon" title="切換明暗主題">
+          <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2"/>
+            <path d="M12 20v2"/>
+            <path d="m4.93 4.93 1.41 1.41"/>
+            <path d="m17.66 17.66 1.41 1.41"/>
+            <path d="M2 12h2"/>
+            <path d="M20 12h2"/>
+            <path d="m6.34 17.66-1.41 1.41"/>
+            <path d="m19.07 4.93-1.41 1.41"/>
+          </svg>
+        </button>
+        <button id="printBtn" class="btn-primary" title="列印或導出為複習筆記 PDF">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9V2h12v7"/>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+            <path d="M6 14h12v8H6z"/>
+          </svg>
+          列印複習清單
+        </button>
+      </div>
+    </header>
+
+    <!-- 主成績儀表板 (Score Dashboard) -->
+    <section class="score-dashboard">
+      <div class="score-main-box">
+        <div class="score-badge-circle">
+          <span class="score-value">88</span>
+          <span class="score-max">/ 100 分</span>
+        </div>
+        <div class="student-tag">
+          <span>周姸汝 (座號 4)</span>
+          <span class="rank-pill">PR 前標水準</span>
+        </div>
+      </div>
+
+      <div class="dashboard-content">
+        <div class="summary-header">
+          <h2>段考作答成效與失分診斷</h2>
+          <p>整體解析幾何、絕對值與二次函數頂點觀念非常扎實！本次失分均集中在「十字交乘正負號」、「函數平移方向代換」與「解方程式兩根正負號」等 3 處運算細節，強化後即可邁向 100 分滿分！</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-item points">
+            <span class="stat-label">扣分總計</span>
+            <div class="stat-num">-12 分</div>
+            <div class="stat-desc">3 處運算細節失誤</div>
+          </div>
+          <div class="stat-item correct">
+            <span class="stat-label">答對題數</span>
+            <div class="stat-num">10 / 13 題</div>
+            <div class="stat-desc">正確率達 77%</div>
+          </div>
+          <div class="stat-item wrong">
+            <span class="stat-label">需訂正題數</span>
+            <div class="stat-num">3 題</div>
+            <div class="stat-desc">填充 2 題 + 計算 1 題</div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">幾何與極值題</span>
+            <div class="stat-num">100% 正確率</div>
+            <div class="stat-desc">解析幾何大獲全勝</div>
+          </div>
+        </div>
+
+        <div class="diagnosis-highlights">
+          <div class="highlight-box danger">
+            <div class="highlight-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              三大失分盲點（本次扣 12 分關鍵）
+            </div>
+            <ul>
+              <li><strong>填充 1 題</strong>：十字交乘只驗算和為 -10，忽略乘積 (+2)(-12) = -24 ≠ +24。</li>
+              <li><strong>填充 4 題</strong>：向右平移 2 單位誤寫成加 2，應為自變數代換 (x - 2)。</li>
+              <li><strong>計算 7 題</strong>：十字交乘正確，但解 (2x-1)(x+3)=0 兩根正負號完全弄反。</li>
+            </ul>
+          </div>
+          <div class="highlight-box success">
+            <div class="highlight-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              四大扎實核心優勢（滿分發揮）
+            </div>
+            <ul>
+              <li><strong>坐標幾何</strong>：重心坐標、中點與距離、平行四邊形第四頂點全拿滿分。</li>
+              <li><strong>二次函數配方</strong>：頂點公式、對稱軸直線方程式與極值計算條理分明。</li>
+              <li><strong>絕對值不等式</strong>：夾擠與分段討論概念清晰，無任何失誤。</li>
+              <li><strong>判別式 D</strong>：正確依據 D &lt; 0 與 D = 0 判定交點個數與相切狀態。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 視覺化動態工具捷徑區 -->
+    <section class="interactive-banner">
+      <div class="tool-card" id="openParabolaTool">
+        <div class="tool-icon" style="color: #6366f1;">📈</div>
+        <div class="tool-info">
+          <h3>拋物線平移互動模擬器</h3>
+          <p>滑動觀察「向右平移」與「向下平移」，直觀看出為何你寫的 (x-1)²-4 會偏左！</p>
+        </div>
+      </div>
+
+      <div class="tool-card" id="openInequalityTool">
+        <div class="tool-icon" style="color: #f43f5e;">⚖️</div>
+        <div class="tool-info">
+          <h3>一元二次不等式圖形解析器</h3>
+          <p>看清 2x²+5x-3 &lt; 0 在 x 軸下方的正負區間，徹底避免兩根正負號看反！</p>
+        </div>
+      </div>
+
+      <div class="tool-card" id="openRetestTool">
+        <div class="tool-icon" style="color: #10b981;">🎯</div>
+        <div class="tool-info">
+          <h3>錯題強化測驗挑戰</h3>
+          <p>針對扣分的 3 道核心概念出變形題，立即隨堂測驗，把 88 分變成滿分 100！</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 控制列：篩選與搜尋 -->
+    <div class="controls-bar">
+      <div class="filter-pills">
+        <button class="filter-btn active" data-filter="all">全部題目 (13)</button>
+        <button class="filter-btn wrong-filter" data-filter="wrong">🚨 錯題檢討專區 (3)</button>
+        <button class="filter-btn correct-filter" data-filter="correct">✅ 滿分答對題目 (10)</button>
+      </div>
+
+      <div class="search-box">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="搜尋題號、關鍵字、公式...">
+      </div>
+    </div>
+
+    <!-- 題目列表渲染區 -->
+    <main id="questionsList" class="questions-container">
+      <!-- 由 app.js 動態渲染題目卡片 -->
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="app-footer">
+      <p>高中數學第一次段考試卷分析系統 · 專為周姸汝同學量身訂做 · 隨時點擊推薦網址進行各單元線上補強</p>
+    </footer>
+  </div>
+
+  <!-- 模態彈窗 1：拋物線平移互動模擬器 -->
+  <div class="modal-overlay" id="parabolaModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>
+          <span>📈</span>
+          二次函數平移互動探究器 (填充題第 4 題視覺化)
+        </h3>
+        <button class="modal-close" data-close="parabolaModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 12px;">
+          拖曳下方滑桿，動態觀察拋物線向右、向下平移時，標準式與頂點坐標的即時變化：
+        </p>
+        <div class="canvas-wrapper">
+          <canvas id="parabolaCanvas" width="650" height="340"></canvas>
+          <div class="canvas-controls">
+            <div class="slider-group">
+              <div class="slider-label">
+                <span>水平平移 (向右為正): <strong id="hVal">+2 單位</strong></span>
+              </div>
+              <input type="range" id="sliderH" min="-5" max="5" step="1" value="2">
+            </div>
+            <div class="slider-group">
+              <div class="slider-label">
+                <span>垂直平移 (向下為負): <strong id="kVal">-3 單位</strong></span>
+              </div>
+              <input type="range" id="sliderK" min="-5" max="5" step="1" value="-3">
+            </div>
+          </div>
+          <div class="canvas-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #38bdf8;"></div>
+              <span>原始圖形: f(x) = (x - 3)² - 1，頂點 (3, -1)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #10b981;"></div>
+              <span id="currentFormulaText">正確移動後: f(x) = (x - 5)² - 4，頂點 (5, -4)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #f43f5e;"></div>
+              <span>你寫的答案: (x - 1)² - 4，頂點 (1, -4) (錯誤向左偏了4單位！)</span>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box danger" style="margin-top: 14px;">
+          <strong>💡 視覺化結論：</strong>
+          當你寫成 $(x - 1)^2 - 4$ 時，頂點位於 $(1, -4)$，其實是從原本的 $(3, -1)$「向左平移 2 單位」，與題目要求的「向右平移 2 單位」正好反向！因此向右平移必須是減 2：$(x - 3 - 2)^2 = (x - 5)^2$。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模態彈窗 2：一元二次不等式圖像模擬器 -->
+  <div class="modal-overlay" id="inequalityModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>
+          <span>⚖️</span>
+          一元二次不等式圖形解析 (計算題第 7 題視覺化)
+        </h3>
+        <button class="modal-close" data-close="inequalityModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 12px;">
+          方程式 $2x^2 + 5x - 3 = 0$ 的兩根為 $x = -3$ 與 $x = \frac{1}{2}$。請看拋物線在 $x$ 軸上下的分界：
+        </p>
+        <div class="canvas-wrapper">
+          <canvas id="inequalityCanvas" width="650" height="340"></canvas>
+          <div class="canvas-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #6366f1;"></div>
+              <span>拋物線: y = 2x² + 5x - 3 (開口向上)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #10b981;"></div>
+              <span>負值區域 (y &lt; 0，x 軸下方): -3 &lt; x &lt; 0.5 (正解)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #f43f5e;"></div>
+              <span>你的誤寫: -0.5 &lt; x &lt; 3 (兩根正負號弄反)</span>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box danger" style="margin-top: 14px;">
+          <strong>🚨 避錯核心：</strong>
+          解 $(2x - 1)(x + 3) = 0$ 時：
+          $$2x - 1 = 0 \implies 2x = 1 \implies x = +\frac{1}{2}$$
+          $$x + 3 = 0 \implies x = -3$$
+          在考卷上寫下兩根後，先在數線上標出 $-3$ 在左、$0.5$ 在右，小於 0 夾在中間，答案自然是 $-3 < x < \frac{1}{2}$！
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模態彈窗 3：錯題強化挑戰測驗 -->
+  <div class="modal-overlay" id="retestModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>
+          <span>🎯</span>
+          錯題概念鞏固 · 變形題 3 題挑戰
+        </h3>
+        <button class="modal-close" data-close="retestModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="quizContainer">
+          <!-- 測驗內容由 JS 動態生成 -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 資料腳本與主程式 (依序 defer 載入，確保 KaTeX 優先就緒) -->
+  <script defer src="exam-data.js"></script>
+  <script defer src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>段考全科智能檢討與錯題診斷系統 · 周姸汝同學專屬分析報告</title>
+  <meta name="description" content="包含高中數學與智光商工英語文段考完整解答過程、逐題深度檢討、錯題思維剖析、全科總和統計分析、原卷對照與錯題強化挑戰測驗。">
+
+  <!-- Google Fonts: Outfit (英數) & Noto Sans TC (繁中) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- KaTeX 數學公式優雅排版支援 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <!-- 核心樣式表 -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- 數據庫腳本 -->
+  <script defer src="exam-data-math.js"></script>
+  <script defer src="exam-data-english.js"></script>
+  <script defer src="exam-data-physics.js"></script>
+  <script defer src="exam-data-chinese.js"></script>
+  <script defer src="exam-data-summary.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <!-- 幾何氛圍動態背景 -->
+  <div class="ambient-bg">
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+    <div class="ambient-blob blob-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- 頂部全域導航列 (Sticky Top Bar) -->
+    <header class="global-header">
+      <div class="brand-section">
+        <div class="brand-icon">✨</div>
+        <div class="brand-text">
+          <h1>段考全科檢討與解答系統</h1>
+          <div class="brand-subtitle">周姸汝同學專屬 · 各科深度檢討 ＆ 全科總和分析</div>
+        </div>
+      </div>
+
+      <!-- 導航分頁切換按鈕 -->
+      <nav class="nav-tabs" aria-label="科目導航分頁">
+        <button class="nav-tab-btn active" data-tab="overview">
+          <span>📊 全科總和分析</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="math">
+          <span>📐 數學科檢討</span>
+          <span class="badge-pill" style="background: rgba(6, 182, 212, 0.3); color: #38bdf8;">88分</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="english">
+          <span>📖 英語文檢討</span>
+          <span class="badge-pill" style="background: rgba(245, 158, 11, 0.3); color: #fbbf24;">78分</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="physics">
+          <span>🔬 自然（物理）檢討</span>
+          <span class="badge-pill" style="background: rgba(16, 185, 129, 0.3); color: #34d399;">92分</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="chinese">
+          <span>📜 國語文檢討</span>
+          <span class="badge-pill" style="background: rgba(168, 85, 247, 0.3); color: #c084fc;">86分</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="quiz">
+          <span>🎯 錯題強化特訓</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="gallery">
+          <span>📄 考卷原卷對照</span>
+        </button>
+      </nav>
+
+      <!-- 快捷工具按鈕 -->
+      <div class="header-actions">
+        <button class="action-icon-btn" id="themeToggleBtn" title="切換深淺模式">
+          <span id="themeIcon">☀️</span>
+          <span id="themeText">亮色模式</span>
+        </button>
+        <button class="action-icon-btn" id="printBtn" title="列印或匯出訂正本">
+          <span>🖨️</span>
+          <span>列印</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ===================================================================
+         分頁 1：全科總和分析 (Overall Summary & Cross-Subject Synthesis)
+         =================================================================== -->
+    <section class="view-panel active" id="panel-overview">
+      <!-- 學生身份英雄橫幅 -->
+      <div id="overviewHero"></div>
+
+      <!-- 四科總結卡片網格 (數學、英文、物理、國文) -->
+      <div class="subject-summary-grid" id="overviewSubjectGrid"></div>
+
+      <!-- 考點掌握度分析表 -->
+      <div class="dashboard-section">
+        <div class="section-head">
+          <h3>
+            <span>📈</span>
+            全科核心知識領域掌握度分佈 (15 大核心考點)
+          </h3>
+          <span class="tag-badge highlight">精準量化診斷</span>
+        </div>
+        <div class="mastery-bars-grid" id="masteryBarsGrid"></div>
+      </div>
+
+      <!-- 跨科盲點深度剖析 -->
+      <div class="dashboard-section">
+        <div class="section-head">
+          <h3>
+            <span>🔍</span>
+            跨科思維盲點深度剖析（周同學三大致命失分模式）
+          </h3>
+          <span class="tag-badge" style="background: rgba(244, 63, 94, 0.15); color: #fb7185;">避錯關鍵</span>
+        </div>
+        <div class="habits-grid" id="habitsGrid"></div>
+      </div>
+
+      <!-- 具體提分戰略方針 -->
+      <div class="dashboard-section">
+        <div class="section-head">
+          <h3>
+            <span>🚀</span>
+            個人化提分行動方針（從 86.0 分邁向 95+ 滿分戰略）
+          </h3>
+          <span class="tag-badge highlight">訂正本黃金軍規</span>
+        </div>
+        <div class="action-plans-grid" id="actionPlansGrid"></div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         分頁 2：數學科深度檢討 (Mathematics Review - 88分)
+         =================================================================== -->
+    <section class="view-panel" id="panel-math">
+      <!-- 視覺化動態工具快捷區 -->
+      <div class="interactive-banner">
+        <div class="tool-card" id="openParabolaTool">
+          <div class="tool-icon" style="color: #6366f1;">📈</div>
+          <div class="tool-info">
+            <h3>拋物線平移互動模擬器</h3>
+            <p>滑動觀察「向右平移 2」與「向下平移 3」，直觀看出為何你的 (x-1)²-4 會向左偏了 4 單位！</p>
+          </div>
+        </div>
+
+        <div class="tool-card" id="openInequalityTool">
+          <div class="tool-icon" style="color: #f43f5e;">⚖️</div>
+          <div class="tool-info">
+            <h3>一元二次不等式圖形解析器</h3>
+            <p>看清 2x²+5x-3 &lt; 0 在 x 軸下方的正負區間，徹底避免兩根正負號看反！</p>
+          </div>
+        </div>
+
+        <div class="tool-card" data-jump="quiz">
+          <div class="tool-icon" style="color: #10b981;">🎯</div>
+          <div class="tool-info">
+            <h3>錯題概念鞏固測驗</h3>
+            <p>針對扣分的 3 道核心數學概念出變形題，立即隨堂測驗，把 88 分變成滿分 100！</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 數學控制列：篩選與搜尋 -->
+      <div class="controls-bar">
+        <div class="filter-pills" id="mathFilterPills">
+          <button class="filter-btn active" data-filter="all">全部題目 (13)</button>
+          <button class="filter-btn wrong-filter" data-filter="wrong">🚨 錯題檢討專區 (3)</button>
+          <button class="filter-btn correct-filter" data-filter="correct">✅ 滿分答對題目 (10)</button>
+        </div>
+
+        <div class="search-box">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="mathSearchInput" placeholder="搜尋題號、公式、題型關鍵字...">
+        </div>
+      </div>
+
+      <!-- 數學題目渲染容器 -->
+      <main class="questions-container" id="mathQuestionsList"></main>
+    </section>
+
+    <!-- ===================================================================
+         分頁 3：英語文深度檢討 (English Review - 78分)
+         =================================================================== -->
+    <section class="view-panel" id="panel-english">
+      <!-- 英語文控制列：狀態篩選與大題快速切換 -->
+      <div class="controls-bar" style="margin-bottom: 14px;">
+        <div class="filter-pills" id="engStatusFilterPills">
+          <button class="filter-btn active" data-filter="all">全部題目 (50)</button>
+          <button class="filter-btn wrong-filter" data-filter="wrong">🚨 錯題檢討專區 (11 處)</button>
+          <button class="filter-btn correct-filter" data-filter="correct">✅ 滿分答對題目 (39 格)</button>
+        </div>
+
+        <div class="search-box">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="engSearchInput" placeholder="搜尋英文單字、片語、題目中文...">
+        </div>
+      </div>
+
+      <!-- 大題分頁小膠囊 -->
+      <div class="controls-bar" style="padding: 10px 16px; margin-bottom: 24px;">
+        <div class="filter-pills" id="engSectionPills">
+          <button class="filter-btn active" data-section="all">全部大題</button>
+          <button class="filter-btn" data-section="vocab">一、單字 (10)</button>
+          <button class="filter-btn" data-section="choice">二、文意字彙 (10)</button>
+          <button class="filter-btn" data-section="match">三、句子配合 (5)</button>
+          <button class="filter-btn" data-section="dict">四、課文默寫 (5)</button>
+          <button class="filter-btn" data-section="trans">五、翻譯填空 (10)</button>
+          <button class="filter-btn wrong-filter" data-section="dial">六、對話測驗 (5 · 重災區)</button>
+          <button class="filter-btn" data-section="read">七、閱讀測驗 (5)</button>
+        </div>
+      </div>
+
+      <!-- 英文題目渲染容器 -->
+      <main class="questions-container" id="engQuestionsList"></main>
+    </section>
+
+    <!-- ===================================================================
+         分頁 4：自然（物理）深度檢討 (Physics Review - 92分)
+         =================================================================== -->
+    <section class="view-panel" id="panel-physics">
+      <!-- 物理重點視覺化圖表卡片 -->
+      <div class="interactive-banner">
+        <div class="tool-card">
+          <div class="tool-icon" style="color: #10b981;">⚛️</div>
+          <div class="tool-info">
+            <h3>自然界四大基本交互作用</h3>
+            <p><strong>強核力</strong>（維持原子核穩定，短程最強）、<strong>電磁力</strong>、<strong>弱核力</strong>（放射性衰變）、<strong>萬有引力</strong>（任何物體相互吸引）。</p>
+          </div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-icon" style="color: #06b6d4;">🚀</div>
+          <div class="tool-info">
+            <h3>101 觀景台高速電梯視重分析</h3>
+            <p>加速上升：$N = m(g+a)$（視重增加、超重）；減速抵達：$N = m(g-a)$（視重減少、失重）。故先增加後減少！</p>
+          </div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-icon" style="color: #f59e0b;">🪂</div>
+          <div class="tool-info">
+            <h3>傘兵垂直降落速度分析</h3>
+            <p>前 3 秒自由加速（達 28.5 m/s），第 3~4 秒間開傘阻力暴增，速率急遽下降至 15.2 m/s 後達到終端速度 9.3 m/s！</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 物理控制列：狀態篩選與搜尋 -->
+      <div class="controls-bar" style="margin-bottom: 14px;">
+        <div class="filter-pills" id="phyStatusFilterPills">
+          <button class="filter-btn active" data-filter="all">全部題目 (50)</button>
+          <button class="filter-btn wrong-filter" data-filter="wrong">🚨 錯題檢討專區 (4 題)</button>
+          <button class="filter-btn correct-filter" data-filter="correct">✅ 滿分答對題目 (46 題)</button>
+        </div>
+
+        <div class="search-box">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="phySearchInput" placeholder="搜尋物理公式、牛頓定律、數值計算...">
+        </div>
+      </div>
+
+      <!-- 大題快速切換 -->
+      <div class="controls-bar" style="padding: 10px 16px; margin-bottom: 24px;">
+        <div class="filter-pills" id="phySectionPills">
+          <button class="filter-btn active" data-section="all">全部大題 (50)</button>
+          <button class="filter-btn" data-section="choice">一、選擇題 (40 題 · 得分 74)</button>
+          <button class="filter-btn" data-section="fillin">二、填充題 (10 格 · 得分 18)</button>
+        </div>
+      </div>
+
+      <!-- 物理題目渲染容器 -->
+      <main class="questions-container" id="phyQuestionsList"></main>
+    </section>
+
+    <!-- ===================================================================
+         分頁 5：國語文深度檢討 (Chinese Review - 86分)
+         =================================================================== -->
+    <section class="view-panel" id="panel-chinese">
+      <!-- 國文古典與現代精華卡片 -->
+      <div class="interactive-banner">
+        <div class="tool-card">
+          <div class="tool-icon" style="color: #8b5cf6;">📜</div>
+          <div class="tool-info">
+            <h3>韓愈〈師說〉：從師之道與賓語前置</h3>
+            <p>「師者，所以傳道、受業、解惑也」；「句讀之不知，惑之不解」為助詞「之」提賓語倒裝（不知句讀，不解疑惑）。</p>
+          </div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-icon" style="color: #ec4899;">🏡</div>
+          <div class="tool-info">
+            <h3>歸有光〈項脊軒志〉：借書滿架，偃仰嘯歌</h3>
+            <p>抒發書齋讀書之樂、悼念祖母與母親之慈愛、結尾「庭有枇杷樹，吾妻死之年所手植也，今已亭亭如蓋矣」寄託喪妻深哀。</p>
+          </div>
+        </div>
+
+        <div class="tool-card">
+          <div class="tool-icon" style="color: #3b82f6;">📖</div>
+          <div class="tool-info">
+            <h3>字音字形與文學素養考點辨析</h3>
+            <p>「針砭（ㄅㄧㄢ）」非「貶」；「借代」帆代指船、杜康代指酒；魯迅〈阿Q正傳〉精神勝利法反映辛亥革命前國民劣根性。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 國文控制列：狀態篩選與搜尋 -->
+      <div class="controls-bar" style="margin-bottom: 14px;">
+        <div class="filter-pills" id="chiStatusFilterPills">
+          <button class="filter-btn active" data-filter="all">全部題目 (50)</button>
+          <button class="filter-btn wrong-filter" data-filter="wrong">🚨 錯題檢討專區 (7 題)</button>
+          <button class="filter-btn correct-filter" data-filter="correct">✅ 滿分答對題目 (43 題)</button>
+        </div>
+
+        <div class="search-box">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="chiSearchInput" placeholder="搜尋題幹、課文語句、成語、字詞...">
+        </div>
+      </div>
+
+      <!-- 國文 5 大單元快速切換 -->
+      <div class="controls-bar" style="padding: 10px 16px; margin-bottom: 24px;">
+        <div class="filter-pills" id="chiSectionPills">
+          <button class="filter-btn active" data-section="all">全部單元 (50)</button>
+          <button class="filter-btn" data-section="vocab">一、字形字音字義 (10)</button>
+          <button class="filter-btn" data-section="rhet">二、成語與修辭文法 (10)</button>
+          <button class="filter-btn" data-section="classic">三、古典散文：師說 (10)</button>
+          <button class="filter-btn" data-section="xiang">四、古典散文：項脊軒志 (10)</button>
+          <button class="filter-btn wrong-filter" data-section="modern">五、現代文學素養題組 (10 · 失分區)</button>
+        </div>
+      </div>
+
+      <!-- 國文題目渲染容器 -->
+      <main class="questions-container" id="chiQuestionsList"></main>
+    </section>
+
+    <!-- ===================================================================
+         分頁 6：全科錯題特訓 (Retest Quiz)
+         =================================================================== -->
+    <section class="view-panel" id="panel-quiz">
+      <div id="quizContainer"></div>
+    </section>
+
+    <!-- ===================================================================
+         分頁 7：考卷原卷與答案卡照片圖庫 (Original Exam Gallery)
+         =================================================================== -->
+    <section class="view-panel" id="panel-gallery">
+      <div class="dashboard-section" style="margin-bottom: 24px;">
+        <div class="section-head">
+          <h3>
+            <span>📄</span>
+            考卷高清掃描原卷與答案欄紅筆批改對照 (共 10 頁)
+          </h3>
+          <span class="tag-badge highlight">點擊任一張照片即可放大與旋轉檢視</span>
+        </div>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+          本區完整呈現周姸汝同學段考作答之真實原稿，涵蓋自然（物理）試題卷與劃卡卡片（92分）、英語文試題卷與答案欄（78分）共 10 頁完整高清掃描與紅筆批改圈記。點擊任一照片即可進入全螢幕燈箱模式，支援旋轉角度與放大對照。
+        </p>
+      </div>
+
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer class="app-footer">
+      <p>115 學年度第 1 學期第一次段考 全科智能試卷深度檢討與錯題診斷系統 · 專為周姸汝同學量身訂做</p>
+      <p style="margin-top: 6px; font-size: 0.8rem;">整合數學科 (88分)、英語文 (78分)、自然物理 (92分) 與國語文 (86分) 四科試卷 · 隨時點擊推薦資源進行線上強化補弱</p>
+    </footer>
+  </div>
+
+  <!-- ===================================================================
+       模態彈窗 1：拋物線平移互動模擬器 (Canvas)
+       =================================================================== -->
+  <div class="modal-overlay" id="parabolaModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>
+          <span>📈</span>
+          二次函數平移互動探究器 (數學填充第 4 題視覺化)
+        </h3>
+        <button class="modal-close" data-close="parabolaModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 12px;">
+          拖曳下方滑桿，動態觀察拋物線向右、向下平移時，標準式與頂點坐標的即時變化：
+        </p>
+        <div class="canvas-wrapper">
+          <canvas id="parabolaCanvas" width="650" height="340"></canvas>
+          <div class="canvas-controls">
+            <div class="slider-group">
+              <div class="slider-label">
+                <span>水平平移 (向右為正): <strong id="hVal">+2 單位</strong></span>
+              </div>
+              <input type="range" id="sliderH" min="-5" max="5" step="1" value="2">
+            </div>
+            <div class="slider-group">
+              <div class="slider-label">
+                <span>垂直平移 (向下為負): <strong id="kVal">-3 單位</strong></span>
+              </div>
+              <input type="range" id="sliderK" min="-5" max="5" step="1" value="-3">
+            </div>
+          </div>
+          <div class="canvas-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #38bdf8;"></div>
+              <span>原始圖形: f(x) = (x - 3)² - 1，頂點 (3, -1)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #10b981;"></div>
+              <span id="currentFormulaText">正確移動後: f(x) = (x - 5)² - 4，頂點 (5, -4)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #f43f5e;"></div>
+              <span>你寫的答案: (x - 1)² - 4，頂點 (1, -4) (向左偏了4單位！)</span>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box danger" style="margin-top: 14px;">
+          <strong>💡 視覺化結論：</strong>
+          當你寫成 $(x - 1)^2 - 4$ 時，頂點位於 $(1, -4)$，其實是從原本的 $(3, -1)$「向左平移 2 單位」，與題目要求的「向右平移 2 單位」正好反向！因此向右平移必須是減 2：$(x - 3 - 2)^2 = (x - 5)^2$。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       模態彈窗 2：一元二次不等式圖像模擬器 (Canvas)
+       =================================================================== -->
+  <div class="modal-overlay" id="inequalityModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>
+          <span>⚖️</span>
+          一元二次不等式圖形解析 (數學計算第 7 題視覺化)
+        </h3>
+        <button class="modal-close" data-close="inequalityModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 12px;">
+          方程式 $2x^2 + 5x - 3 = 0$ 的兩根為 $x = -3$ 與 $x = \frac{1}{2}$。請看拋物線在 $x$ 軸上下的分界：
+        </p>
+        <div class="canvas-wrapper">
+          <canvas id="inequalityCanvas" width="650" height="340"></canvas>
+          <div class="canvas-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #6366f1;"></div>
+              <span>拋物線: y = 2x² + 5x - 3 (開口向上)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #10b981;"></div>
+              <span>負值區域 (y &lt; 0，x 軸下方): -3 &lt; x &lt; 0.5 (正解)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #f43f5e;"></div>
+              <span>你的誤寫: -0.5 &lt; x &lt; 3 (兩根正負號弄反)</span>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box danger" style="margin-top: 14px;">
+          <strong>🚨 避錯核心：</strong>
+          解 $(2x - 1)(x + 3) = 0$ 時：
+          $$2x - 1 = 0 \implies 2x = 1 \implies x = +\frac{1}{2}$$
+          $$x + 3 = 0 \implies x = -3$$
+          在考卷上寫下兩根後，先在數線上標出 $-3$ 在左、$0.5$ 在右，小於 0 夾在中間，答案自然是 $-3 < x < \frac{1}{2}$！
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       模態彈窗 3：原卷照片全螢幕燈箱檢視器 (Lightbox with Rotate)
+       =================================================================== -->
+  <div class="modal-overlay" id="lightboxModal">
+    <div class="modal-container" style="max-width: 1000px;">
+      <div class="modal-header">
+        <h3 id="lightboxTitle">考卷原卷高清檢視</h3>
+        <button class="modal-close" data-close="lightboxModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="lightbox-img-wrapper">
+          <img id="lightboxImg" src="" alt="原卷高清掃描">
+        </div>
+        <div class="lightbox-toolbar">
+          <button class="action-icon-btn" onclick="rotateLightbox(-90)">
+            <span>↺</span>
+            <span>逆時針旋轉 90°</span>
+          </button>
+          <button class="action-icon-btn" onclick="rotateLightbox(90)">
+            <span>↻</span>
+            <span>順時針旋轉 90°</span>
+          </button>
+          <button class="action-icon-btn" onclick="rotateLightbox(180)">
+            <span>🔄</span>
+            <span>旋轉 180°</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
